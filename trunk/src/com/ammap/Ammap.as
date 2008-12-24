@@ -1078,6 +1078,8 @@ class com.ammap.Ammap
 	// modify by tony
     function __setDeveloperText()
     {
+		FlashInterface.dispatchEvent({type:'ammapMouseMove', data:{coordx:__map_mc._x, coordy:__map_mc._y, zoom:__zoom_level}});
+		
 		var _cons_test = "__mc._xmouse=" + __mc._xmouse + ", __mc._ymouse=" + __mc._ymouse + "<br>"
 			+ "__map_mc._x=" + __map_mc._x + ", __map_mc._y=" + __map_mc._y + "<br>"
 			+ "__config.map_width=" + __config.map_width + ", __config.map_height=" + __config.map_height + "<br>"
@@ -1097,7 +1099,7 @@ class com.ammap.Ammap
 		
         __developer_tf.__set__htmlTxt(_cons_test + "<br>" + _long_lat_test + "<br>" + __long_lat + "<br>" + __xy + "<br>" + __xyp + "<br>" + __zoom_info + "<br><b>Right click to copy this info to clipboard</b>");
     
-		//FlashInterface.dispatchEvent({type:'mouseMove', data:{coordx:__map_mc._x, coordy:__map_mc._y, zoom:__zoom_level}});
+		
         /*FlashInterface.dispatchEvent({type:'mouseMove', 
 									 data:{x:__mc._xmouse, 
 									 y:__mc._ymouse,

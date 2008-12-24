@@ -8,16 +8,12 @@ package com.hozom.map
 		public var lat:Number;
 		public var mcX:Number;
 		public var mcY:Number;
-		public var xOffset:int;
-		public var yOffset:int;
+		public var xOffset:Number;
+		public var yOffset:Number;
 		public var disObj:DisplayObject;
 		
-		//public function Floater()
-		//{
-		//}
-		
 		public function Floater(long:Number=0, lat:Number=0, mcX:Number=0, mcY:Number=0, 
-			xOffset:int=0, yOffset:int=0, disObj:DisplayObject=null)
+			xOffset:Number=0, yOffset:Number=0, disObj:DisplayObject=null)
 		{
 			this.long = long;
 			this.lat = lat;

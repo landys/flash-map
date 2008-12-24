@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	verticalScrollPolicy="off" horizontalScrollPolicy="off">
 	<mx:Script>
 		<![CDATA[
+			import mx.core.Application;
+			import com.hozom.map.HozomMapCaller;
 			import mx.controls.Alert;
 			import com.hozom.map.Floater;
 			import mx.controls.Image;
 			import com.hozom.map.HozomMapUtil;
-			import flx.external.FlashInterface;
+			
+			private var mapCaller:HozomMapCaller;
 			
 			[Embed(source="assets/add.png")]
 			private const ICON_ADD:Class;
@@ -38,34 +42,44 @@
 			[Embed(source="assets/searchpop.png")]
 			private const ICON_SEARCHPOP:Class;
 			
+			public function addContact(long:Number, lat:Number):void
+			{
+				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, ICON_DOT);
+
+				this.addChild(floater.disObj);
+				
+				mapCaller.addFloater(floater);
+			}
+			
+			public function addHozomUser(long:Number, lat:Number):void
+			{
+				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, ICON_HEAD);
+
+				this.addChild(floater.disObj);
+				
+				mapCaller.addFloater(floater);
+			}
+			
+			//public function add
+			
 			private function initAmmap():void
 			{
-				//HozomMapUtil.initListener();
+				mapCaller = new HozomMapCaller();
+				mapCaller.initListener();
 			}
 			
-			public function addDot(long:Number, lat:Number):void
+			private function createImageFloater(long:Number, lat:Number, xOffset:Number, yOffset:Number, source:Class):Floater
 			{
-				//Alert.show(FlashInterface.call("ammap.getTest").result);
 				var imgDot:Image = new Image();
-				//var mcX:Number = HozomMapUtil.getMcXByLong(long);
-				//var mcY:Number = HozomMapUtil.getMcYByLat(lat);
-				var xOffset:int = -13;
-				var yOffset:int = -29;
-				imgDot.x = HozomMapUtil.getXByLong(long) + xOffset;
-				imgDot.y = HozomMapUtil.getYByLat(lat) + yOffset;
-				imgDot.source = ICON_POPNEW;
-				this.addChild(imgDot);
+				var mcX:Number = mapCaller.getMcXByLong(long);
+				var mcY:Number = mapCaller.getMcYByLat(lat);
+				imgDot.x = mapCaller.getXByLong(long) + xOffset;
+				imgDot.y = mapCaller.getYByLat(lat) + yOffset;
+				imgDot.source = source;
 				
-				//HozomMapUtil.floaters.addItem(new Floater(long, lat, mcX, mcY, xOffset, yOffset, imgDot));
+				return new Floater(long, lat, mcX, mcY, xOffset, yOffset, imgDot);
 			}
-			
-			public function addHead(long:Number, lat:Number):void
-			{
-				
-			}
-			
-			
 		]]>
 	</mx:Script>
-	<mx:SWFLoader source="ammap.swf?flashId=hozomAmmap" creationComplete="initAmmap();" />
+	<mx:SWFLoader id="hozomAmmap" source="ammap.swf?flashId=hozomAmmap" creationComplete="initAmmap();" />
 </mx:Canvas>

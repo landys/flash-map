@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:hozom="*"
+	initialize="beforeApp()"
 	creationComplete="initApp()">
 	<mx:Script>
 		<![CDATA[
+			import flx.external.FlashInterface;
+			
+			private function beforeApp():void
+			{
+				FlashInterface.publish(this, true);
+			}
+			
 			private function initApp():void
 			{
+
 			}
 			
 			private function createDot_click(event:MouseEvent):void
 			{
-				hozomMap.addDot(116.387909, 39.90601);
+				hozomMap.addContact(116.387909, 39.90601);
 			}
 		]]>
 	</mx:Script>
-	<mx:HBox>
+	<mx:HBox mouseDown="event.stopPropagation()" mouseMove="event.stopPropagation()">
 		<mx:Button label="createDot" click="createDot_click(event)"/>
 		<hozom:HozomMap id="hozomMap" width="700" height="600"/>
 	</mx:HBox>
