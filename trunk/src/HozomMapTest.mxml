@@ -19,10 +19,14 @@
 			private function createDot_click(event:MouseEvent):void
 			{
 				hozomMap.addContact(116.387909, 39.90601);
+				
+				hozomMap.addHozomUser(100.387909, 39.90601);
+				
+				hozomMap.addSearchedCity(112.387909, 28.90601);
 			}
 		]]>
 	</mx:Script>
-	<mx:HBox mouseDown="event.stopPropagation()" mouseMove="event.stopPropagation()">
+	<mx:HBox>
 		<mx:Button label="createDot" click="createDot_click(event)"/>
 		<hozom:HozomMap id="hozomMap" width="700" height="600"/>
 	</mx:HBox>

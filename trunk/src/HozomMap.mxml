@@ -45,18 +45,21 @@
 			public function addContact(long:Number, lat:Number):void
 			{
 				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, ICON_DOT);
-
 				this.addChild(floater.disObj);
-				
 				mapCaller.addFloater(floater);
 			}
 			
 			public function addHozomUser(long:Number, lat:Number):void
 			{
 				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, ICON_HEAD);
-
 				this.addChild(floater.disObj);
-				
+				mapCaller.addFloater(floater);
+			}
+			
+			public function addSearchedCity(long:Number, lat:Number):void
+			{
+				var floater:Floater = createImageFloater(long, lat, -10, -10, ICON_FLASHDOT);
+				this.addChild(floater.disObj);
 				mapCaller.addFloater(floater);
 			}
 			
