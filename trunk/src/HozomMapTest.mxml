@@ -4,7 +4,13 @@
 	creationComplete="initApp()">
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import flx.external.FlashInterface;
+			
+			private var cid:int = 0;
+			private var hid:int = 0;
+			private var hid2:int = 0;
+			private var sid:int = 0;
 			
 			private function beforeApp():void
 			{
@@ -18,17 +24,38 @@
 			
 			private function createDot_click(event:MouseEvent):void
 			{
-				hozomMap.addContact(116.387909, 39.90601);
+				cid = hozomMap.addContact(116.387909, 39.90601);
+				hid = hozomMap.addHozomUser(100.387909, 39.90601);
+				hid2 = hozomMap.addHozomUser(98.387909, 30.90601);
+				sid = hozomMap.addSearchedCity(112.387909, 28.90601);
 				
-				hozomMap.addHozomUser(100.387909, 39.90601);
-				
-				hozomMap.addSearchedCity(112.387909, 28.90601);
+				btnCreateDot.enabled = false;
+				btnShowOnline.enabled = true;
+				btnHideOnline.enabled = true;
+			}
+			
+			private function showOnline_click(event:MouseEvent):void
+			{
+				hozomMap.showOnline(hid);
+				hozomMap.showHozomUserInfo(hid2);
+				hozomMap.showSearchedCityInfo(sid);
+			}
+			
+			private function hideOnline_click(event:MouseEvent):void
+			{
+				hozomMap.hideOnline(hid);
+				hozomMap.hideHozomUserInfo(hid2);
+				hozomMap.hideSearchedCityInfo(sid);
 			}
 		]]>
 	</mx:Script>
 	<mx:HBox>
-		<mx:Button label="createDot" click="createDot_click(event)"/>
-		<hozom:HozomMap id="hozomMap" width="700" height="600"/>
+		<mx:VBox>
+			<mx:Button id="btnCreateDot" label="createDot" click="createDot_click(event)"/>
+			<mx:Button id="btnShowOnline" label="showOnline" enabled="false" click="showOnline_click(event)"/>
+			<mx:Button id="btnHideOnline" label="hideOnline" enabled="false" click="hideOnline_click(event)"/>
+		</mx:VBox>
+		<hozom:HozomMap id="hozomMap" width="600" height="480" borderStyle="solid"/>
 	</mx:HBox>
 	
 </mx:Application>

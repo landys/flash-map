@@ -42,25 +42,72 @@
 			[Embed(source="assets/searchpop.png")]
 			private const ICON_SEARCHPOP:Class;
 			
-			public function addContact(long:Number, lat:Number):void
+			public function addContact(long:Number, lat:Number):int
 			{
 				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, ICON_DOT);
+				floater.type = HozomMapUtil.CONTACT_TYPE;
 				this.addChild(floater.disObj);
-				mapCaller.addFloater(floater);
+				return mapCaller.addFloater(floater);
 			}
 			
-			public function addHozomUser(long:Number, lat:Number):void
+			public function addHozomUser(long:Number, lat:Number):int
 			{
 				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, ICON_HEAD);
+				floater.type = HozomMapUtil.HOZOM_USER_TYPE;
+				
+				floater.data = new Object();
+				var of:Floater = createAttachedImageFloater(floater, -6, -29, ICON_POPNEW);
+				var pf:Floater = createAttachedImageFloater(floater, 4, -41, ICON_HEADPOP);
+				floater.data[HozomMapUtil.FLOATER_ONLINE_KEY] = of;
+				floater.data[HozomMapUtil.FLOATER_POP_KEY] = pf;
+				
 				this.addChild(floater.disObj);
-				mapCaller.addFloater(floater);
+				
+				return mapCaller.addFloater(floater);
 			}
 			
-			public function addSearchedCity(long:Number, lat:Number):void
+			public function addSearchedCity(long:Number, lat:Number):int
 			{
 				var floater:Floater = createImageFloater(long, lat, -10, -10, ICON_FLASHDOT);
+				floater.type = HozomMapUtil.SEARCHED_CITY_TYPE;
+				
+				floater.data = new Object();
+				var pf:Floater = createAttachedImageFloater(floater, -51, -50, ICON_SEARCHPOP);
+				floater.data[HozomMapUtil.FLOATER_POP_KEY] = pf;
+				
 				this.addChild(floater.disObj);
-				mapCaller.addFloater(floater);
+				
+				return mapCaller.addFloater(floater);
+			}
+			
+			public function showOnline(hozomUserId:int) : void
+			{
+				showOrHideAttachedFloater(hozomUserId, HozomMapUtil.HOZOM_USER_TYPE, HozomMapUtil.FLOATER_ONLINE_KEY, true);
+			}
+			
+			public function hideOnline(hozomUserId:int) : void
+			{
+				showOrHideAttachedFloater(hozomUserId, HozomMapUtil.HOZOM_USER_TYPE, HozomMapUtil.FLOATER_ONLINE_KEY, false);
+			}
+			
+			public function showHozomUserInfo(hozomUserId:int) : void
+			{
+				showOrHideAttachedFloater(hozomUserId, HozomMapUtil.HOZOM_USER_TYPE, HozomMapUtil.FLOATER_POP_KEY, true);
+			}
+			
+			public function hideHozomUserInfo(hozomUserId:int) : void
+			{
+				showOrHideAttachedFloater(hozomUserId, HozomMapUtil.HOZOM_USER_TYPE, HozomMapUtil.FLOATER_POP_KEY, false);
+			}
+			
+			public function showSearchedCityInfo(searchedCityId:int) : void
+			{
+				showOrHideAttachedFloater(searchedCityId, HozomMapUtil.SEARCHED_CITY_TYPE, HozomMapUtil.FLOATER_POP_KEY, true);
+			}
+			
+			public function hideSearchedCityInfo(searchedCityId:int) : void
+			{
+				showOrHideAttachedFloater(searchedCityId, HozomMapUtil.SEARCHED_CITY_TYPE, HozomMapUtil.FLOATER_POP_KEY, false);
 			}
 			
 			//public function add
@@ -73,14 +120,48 @@
 			
 			private function createImageFloater(long:Number, lat:Number, xOffset:Number, yOffset:Number, source:Class):Floater
 			{
-				var imgDot:Image = new Image();
+				var img:Image = new Image();
 				var mcX:Number = mapCaller.getMcXByLong(long);
 				var mcY:Number = mapCaller.getMcYByLat(lat);
-				imgDot.x = mapCaller.getXByLong(long) + xOffset;
-				imgDot.y = mapCaller.getYByLat(lat) + yOffset;
-				imgDot.source = source;
+				img.x = mapCaller.getXByLong(long) + xOffset;
+				img.y = mapCaller.getYByLat(lat) + yOffset;
+				img.source = source;
 				
-				return new Floater(long, lat, mcX, mcY, xOffset, yOffset, imgDot);
+				return new Floater(long, lat, mcX, mcY, xOffset, yOffset, img);
+			}
+			
+			private function createAttachedImageFloater(host:Floater, xOffset:Number, yOffset:Number, source:Class) : Floater
+			{
+				var img:Image = new Image();
+				img.source = source;
+				img.visible = false;
+				img.x = host.disObj.x + xOffset;
+				img.y = host.disObj.y + yOffset;
+				return new Floater(0, 0, 0, 0, xOffset, yOffset, img);
+			}
+			
+			private function showOrHideAttachedFloater(id:int, floaterType:String, key:String, visible:Boolean):void
+			{
+				var floater:Floater = mapCaller.findFloaterById(id);
+				if (floater == null || floater.type != floaterType)
+				{
+					return;
+				}
+			
+				var of:Floater = Floater(floater.data[key]);
+				if (of.disObj.visible != visible)
+				{
+					if (visible)
+					{
+						this.addChild(of.disObj);
+					}
+					else
+					{
+						this.removeChild(of.disObj);
+					}
+					
+					of.disObj.visible = visible;
+				}
 			}
 		]]>
 	</mx:Script>

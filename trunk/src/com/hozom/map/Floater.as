@@ -11,6 +11,8 @@ package com.hozom.map
 		public var xOffset:Number;
 		public var yOffset:Number;
 		public var disObj:DisplayObject;
+		public var type:String;
+		public var data:Object;
 		
 		public function Floater(long:Number=0, lat:Number=0, mcX:Number=0, mcY:Number=0, 
 			xOffset:Number=0, yOffset:Number=0, disObj:DisplayObject=null)
@@ -22,6 +24,9 @@ package com.hozom.map
 			this.xOffset = xOffset;
 			this.yOffset = yOffset;
 			this.disObj = disObj;
+			
+			this.type = null;
+			this.data = null;
 		}
 	}
 }
