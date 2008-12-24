@@ -12,6 +12,9 @@
 			private var hid2:int = 0;
 			private var sid:int = 0;
 			
+			[Bindable]
+			private var added:Boolean = false;
+			
 			private function beforeApp():void
 			{
 				FlashInterface.publish(this, true);
@@ -29,9 +32,7 @@
 				hid2 = hozomMap.addHozomUser(98.387909, 30.90601);
 				sid = hozomMap.addSearchedCity(112.387909, 28.90601);
 				
-				btnCreateDot.enabled = false;
-				btnShowOnline.enabled = true;
-				btnHideOnline.enabled = true;
+				added = true;
 			}
 			
 			private function showOnline_click(event:MouseEvent):void
@@ -51,9 +52,13 @@
 	</mx:Script>
 	<mx:HBox>
 		<mx:VBox>
-			<mx:Button id="btnCreateDot" label="createDot" click="createDot_click(event)"/>
-			<mx:Button id="btnShowOnline" label="showOnline" enabled="false" click="showOnline_click(event)"/>
-			<mx:Button id="btnHideOnline" label="hideOnline" enabled="false" click="hideOnline_click(event)"/>
+			<mx:Button id="btnCreateDot" label="createDot" enabled="{!added}" click="createDot_click(event)"/>
+			<mx:Button id="btnShowOnline" label="showOnline" enabled="{added}" click="hozomMap.showOnline(hid)"/>
+			<mx:Button id="btnHideOnline" label="hideOnline" enabled="{added}" click="hozomMap.hideOnline(hid)"/>
+			<mx:Button id="btnShowHozomUserInfo" label="showHozomUserInfo" enabled="{added}" click="hozomMap.showHozomUserInfo(hid2)"/>
+			<mx:Button id="btnHideHozomUserInfo" label="hideHozomUserInfo" enabled="{added}" click="hozomMap.hideHozomUserInfo(hid2)"/>
+			<mx:Button id="btnShowSearchedCityInfo" label="showSearchedCityInfo" enabled="{added}" click="hozomMap.showSearchedCityInfo(sid)"/>
+			<mx:Button id="btnHideSearchedCityInfo" label="hideSearchedCityInfo" enabled="{added}" click="hozomMap.hideSearchedCityInfo(sid)"/>
 		</mx:VBox>
 		<hozom:HozomMap id="hozomMap" width="600" height="480" borderStyle="solid"/>
 	</mx:HBox>
