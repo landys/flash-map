@@ -1,13 +1,13 @@
 package com.hozom.map
 {
-	import flx.events.FlashInterfaceEvent;
 	import flx.external.FlashInterface;
+	import flx.events.FlashInterfaceEvent;	
 	
 	import mx.collections.ArrayCollection;
 	
 	public class HozomMapUtil
 	{
-		public static const AMMAP_ID:String = "ammap";
+		public static const AMMAP_ID:String = "hozomAmmap";
 		
 		/*public static var mouseX:Number = 0;
 		
@@ -36,7 +36,7 @@ package com.hozom.map
 		
 		public static function initListener():void
 		{
-			FlashInterface.addEventListener("mouseMove", ammpMouseMove);
+			//FlashInterface.addEventListener("mouseMove", ammpMouseMove);
 		}
 		
 		private static function ammpMouseMove(event:FlashInterfaceEvent):void

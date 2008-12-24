@@ -6,6 +6,7 @@
 			import com.hozom.map.Floater;
 			import mx.controls.Image;
 			import com.hozom.map.HozomMapUtil;
+			import flx.external.FlashInterface;
 			
 			[Embed(source="assets/add.png")]
 			private const ICON_ADD:Class;
@@ -44,7 +45,7 @@
 			
 			public function addDot(long:Number, lat:Number):void
 			{
-				Alert.show(FlashInterface.call("ammap.getTest").result);
+				//Alert.show(FlashInterface.call("ammap.getTest").result);
 				var imgDot:Image = new Image();
 				//var mcX:Number = HozomMapUtil.getMcXByLong(long);
 				//var mcY:Number = HozomMapUtil.getMcYByLat(lat);
@@ -66,5 +67,5 @@
 			
 		]]>
 	</mx:Script>
-	<mx:SWFLoader source="ammap.swf?flashId=ammap" creationComplete="initAmmap();" />
+	<mx:SWFLoader source="ammap.swf?flashId=hozomAmmap" creationComplete="initAmmap();" />
 </mx:Canvas>

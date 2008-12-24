@@ -1093,11 +1093,11 @@ class com.ammap.Ammap
         } // end if
         __long_lat = "long=\"" + __long + "\" lat=\"" + __lat + "\"";
 		
-		var _long_lat_test = "calc_long=" + getXbyLong(__long) + ", calc_lat=" + getYBYLat(__lat);
+		var _long_lat_test = "calc_long=" + findXByLong(__long) + ", calc_lat=" + findYByLat(__lat);
 		
         __developer_tf.__set__htmlTxt(_cons_test + "<br>" + _long_lat_test + "<br>" + __long_lat + "<br>" + __xy + "<br>" + __xyp + "<br>" + __zoom_info + "<br><b>Right click to copy this info to clipboard</b>");
     
-		FlashInterface.dispatchEvent({type:'mouseMove', data:{coordx:__map_mc._x, coordy:__map_mc._y, zoom:__zoom_level}});
+		//FlashInterface.dispatchEvent({type:'mouseMove', data:{coordx:__map_mc._x, coordy:__map_mc._y, zoom:__zoom_level}});
         /*FlashInterface.dispatchEvent({type:'mouseMove', 
 									 data:{x:__mc._xmouse, 
 									 y:__mc._ymouse,
@@ -1264,23 +1264,35 @@ class com.ammap.Ammap
     var __map_y = 0;
 	
 	// tony
-	function getMcXbyLong(_long)
+	function findMcXByLong(_long)
 	{
 		return com.ammap.Utils.longitudeToPixels(__config.projection, _long, __data.tl_long, 
 			__data.br_long, __config.map_width);
 	} // End of the function
-	function getMcYBYLat(_lat)
+	function findMcYByLat(_lat)
 	{
 		return com.ammap.Utils.latitudeToPixels(__config.projection, _lat, __data.tl_lat, 
 			__data.br_lat, __config.map_height);
 	} // End of the function
-	function getXbyLong(_long)
+	function findXByLong(_long)
 	{
-		return Math.round(getMcXbyLong(_long) * __zoom_level / 100  + __map_mc._x);
+		return Math.round(findMcXByLong(_long) * __zoom_level / 100  + __map_mc._x);
 	} // End of the function
-	function getYBYLat(_lat)
+	function findYByLat(_lat)
 	{
-		return Math.round(getMcYBYLat(_lat) * __zoom_level / 100 + __map_mc._y);
+		return Math.round(findMcYByLat(_lat) * __zoom_level / 100 + __map_mc._y);
 	} // End of the function
+	function get zoom_level_number()
+    {
+        return __zoom_level;
+    } // End of the function
+	function get mc_map_x()
+    {
+        return __map_mc._x;
+    } // End of the function
+	function get mc_map_y()
+    {
+        return __map_mc._y;
+    } // End of the function
 	// End of tony
 } // End of Class
