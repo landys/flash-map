@@ -61,33 +61,79 @@ package com.hozom.map
 			return floaterMap[id];
 		}
 		
+		public function removeFloaterById(id:int):void
+		{
+			// TODO mark it and its attached deleted.
+			var floater:Floater = findFloaterById(id);
+			floater.isDeleted = true;
+			if (floater.data != null)
+			{
+				var obj:Object = floater.data[HozomMapUtil.FLOATER_ONLINE_KEY];
+				if (obj != null)
+				{
+					Floater(obj).isDeleted = true;
+				}
+				
+				obj = floater.data[HozomMapUtil.FLOATER_POP_KEY];
+				if (obj != null)
+				{
+					Floater(obj).isDeleted = true;
+				}
+			}
+		}
+		
 		private function adjustFloaters():void
 		{
 			for (var i:int=0; i<floaters.length; ++i)
 			{
 				var floater:Floater = Floater(floaters.getItemAt(i));
+				if (floater.isDeleted)
+				{
+					continue;
+				}
 				floater.disObj.x = Math.round(adjustX(floater.mcX) + floater.xOffset);
 				floater.disObj.y = Math.round(adjustY(floater.mcY) + floater.yOffset);
+				
+				// no need atm, for no animation after it created.
+				//adjustExpandAnimation(floater);
 				
 				if (floater.data != null)
 				{
 					var obj:Object = floater.data[HozomMapUtil.FLOATER_ONLINE_KEY];
-					var f:Floater = null;
 					if (obj != null)
 					{
-						f = Floater(obj);
-						f.disObj.x = floater.disObj.x + f.xOffset;
-						f.disObj.y = floater.disObj.y + f.yOffset;
+						adjustAttached(Floater(obj), floater);
 					}
 					
 					obj = floater.data[HozomMapUtil.FLOATER_POP_KEY];
 					if (obj != null)
 					{
-						f = Floater(obj);
-						f.disObj.x = floater.disObj.x + f.xOffset;
-						f.disObj.y = floater.disObj.y + f.yOffset;
+						adjustAttached(Floater(obj), floater);
 					}
 				}
+			}
+		}
+		
+		private function adjustAttached(af:Floater, host:Floater):void
+		{
+			af.disObj.x = host.disObj.x + af.xOffset;
+			af.disObj.y = host.disObj.y + af.yOffset;
+			adjustExpandAnimation(af);
+		}
+		
+		private function adjustExpandAnimation(floater:Floater):void
+		{
+			var ed:ExpandData = floater.ed;
+			if (ed != null)
+			{
+				var x:int = floater.disObj.x;
+				var y:int = floater.disObj.y;
+				var xft:int = ed.fromX - ed.toX;
+				var yft:int = ed.fromY - ed.toY;
+				ed.toX = x;
+				ed.toY = y;
+				ed.fromX = x + xft;
+				ed.fromY = y + yft;
 			}
 		}
 		

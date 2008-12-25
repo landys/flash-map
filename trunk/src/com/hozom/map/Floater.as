@@ -13,6 +13,8 @@ package com.hozom.map
 		public var disObj:DisplayObject;
 		public var type:String;
 		public var data:Object;
+		public var ed:ExpandData;
+		public var isDeleted:Boolean;
 		
 		public function Floater(long:Number=0, lat:Number=0, mcX:Number=0, mcY:Number=0, 
 			xOffset:Number=0, yOffset:Number=0, disObj:DisplayObject=null)
@@ -25,8 +27,10 @@ package com.hozom.map
 			this.yOffset = yOffset;
 			this.disObj = disObj;
 			
+			this.isDeleted = false;
 			this.type = null;
 			this.data = null;
+			this.ed = null;
 		}
 	}
 }

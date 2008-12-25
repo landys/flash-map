@@ -49,6 +49,7 @@
 				hozomMap.hideHozomUserInfo(hid2);
 				hozomMap.hideSearchedCityInfo(sid);
 			}
+			
 		]]>
 	</mx:Script>
 	<mx:HBox>
@@ -60,6 +61,7 @@
 			<mx:Button id="btnHideHozomUserInfo" label="hideHozomUserInfo" enabled="{added}" click="hozomMap.hideHozomUserInfo(hid2)"/>
 			<mx:Button id="btnShowSearchedCityInfo" label="showSearchedCityInfo" enabled="{added}" click="hozomMap.showSearchedCityInfo(sid)"/>
 			<mx:Button id="btnHideSearchedCityInfo" label="hideSearchedCityInfo" enabled="{added}" click="hozomMap.hideSearchedCityInfo(sid)"/>
+			<mx:Button label="RemoveSearchedCity" enabled="{added}" click="hozomMap.removeSearchedCityById(sid)"/>
 		</mx:VBox>
 		<hozom:HozomMap id="hozomMap" width="600" height="480" borderStyle="solid"
 			 hozomUserNumber="33" contactNumber="155"/>

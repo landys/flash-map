@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="192" height="64"
-	backgroundImage="{HozomMapUtil.ICON_SEARCHPOP}">
+	backgroundImage="{HozomMapUtil.ICON_SEARCHPOP}"
+	horizontalScrollPolicy="off" verticalScrollPolicy="off">
 	<!-- {HozomMapUtil.ICON_SEARCHPOP}, @Embed('assets/searchpop.png') -->
 	<mx:Script>
 		<![CDATA[

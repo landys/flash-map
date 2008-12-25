@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="129" height="44"
-	backgroundImage="{HozomMapUtil.ICON_HEADPOP}">
+	backgroundImage="{HozomMapUtil.ICON_HEADPOP}"
+	horizontalScrollPolicy="off" verticalScrollPolicy="off">
 	<mx:Script>
 		<![CDATA[
 			import com.hozom.map.HozomMapUtil;

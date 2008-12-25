@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
 	verticalScrollPolicy="off" horizontalScrollPolicy="off"
-	xmlns:hozom="*">
+	xmlns:hozom="*" creationComplete="initHozomMap();">
 	<mx:Script>
 		<![CDATA[
+			import mx.effects.Move;
+			import mx.effects.Parallel;
 			import mx.core.Application;
 			import com.hozom.map.HozomMapCaller;
 			import mx.controls.Alert;
 			import com.hozom.map.Floater;
+			import com.hozom.map.ExpandData;
 			import mx.controls.Image;
 			import com.hozom.map.HozomMapUtil;
 			
@@ -19,6 +22,10 @@
 			
 			[Bindable]
 			public var contactNumber:int;
+			
+			// for attached floater animation.
+			[Bindable]
+			private var ed:ExpandData = new ExpandData();;
 			
 			public function addContact(long:Number, lat:Number):int
 			{
@@ -34,31 +41,60 @@
 				floater.type = HozomMapUtil.HOZOM_USER_TYPE;
 				
 				floater.data = new Object();
+				// attached floater
 				var of:Floater = createAttachedImageFloater(floater, -6, -29, HozomMapUtil.ICON_POPNEW);
+				// expand animation
+				var x:int = of.disObj.x;
+				var y:int = of.disObj.y;
+				of.ed = new ExpandData(x+9, y+30, x, y, 0, 0, 26, 29);
 				
+				// attached floater
 				var huip:HozomUserInfoPopup = new HozomUserInfoPopup();
 				huip.hozomUserName = name;
 				var pf:Floater = createAttachedFloater(floater, 4, -41, huip);
+				// expand animation
+				x = pf.disObj.x;
+				y = pf.disObj.y;
+				pf.ed = new ExpandData(x+5, y+32, x, y, 0, 0, 129, 44);
 				
 				floater.data[HozomMapUtil.FLOATER_ONLINE_KEY] = of;
 				floater.data[HozomMapUtil.FLOATER_POP_KEY] = pf;
 				
 				this.addChild(floater.disObj);
 				
-				return mapCaller.addFloater(floater);
+				var id:int = mapCaller.addFloater(floater);
+				
+				// and mouse handlers
+				var img:Image = Image(floater.disObj);
+				img.data = id;
+				img.buttonMode = true;
+				img.useHandCursor = true;
+				img.addEventListener(MouseEvent.ROLL_OVER, hozomUserRollOver);
+				img.addEventListener(MouseEvent.ROLL_OUT, hozomUserRollOut);
+
+				return id;
 			}
 			
 			public function addSearchedCity(long:Number, lat:Number, phoneNumber:String, city:String):int
 			{
 				var floater:Floater = createImageFloater(long, lat, -10, -10, HozomMapUtil.ICON_FLASHDOT);
 				floater.type = HozomMapUtil.SEARCHED_CITY_TYPE;
+				// animation
+				//var x:int = floater.disObj.x;
+				//var y:int = floater.disObj.y;
+				//floater.ed = new ExpandData(x+10, y+10, x, y, 0, 0, 20, 20);
 				
 				floater.data = new Object();
 				
+				// attached floater
 				var scp:SearchedCityPopup = new SearchedCityPopup();
 				scp.phoneNumber = phoneNumber;
 				scp.city = city;
 				var pf:Floater = createAttachedFloater(floater, -51, -50, scp);
+				// expand animation
+				var x:int = pf.disObj.x;
+				var y:int = pf.disObj.y;
+				pf.ed = new ExpandData(x+60, y+62, x, y, 0, 0, 192, 64);
 				floater.data[HozomMapUtil.FLOATER_POP_KEY] = pf;
 				
 				this.addChild(floater.disObj);
@@ -69,10 +105,45 @@
 				img.data = id;
 				img.buttonMode = true;
 				img.useHandCursor = true;
+				img.addEventListener("creationComplete", searchedCityComlete);
 				img.addEventListener(MouseEvent.ROLL_OVER, searchedCityRollOver);
 				img.addEventListener(MouseEvent.ROLL_OUT, searchedCityRollOut);
 
 				return id;
+			}
+			
+			public function removeSearchedCityById(searchedCityId:int) : void
+			{
+				if (glowImage.isPlaying)
+				{
+					glowImage.end();
+				}
+				
+				var floater:Floater = mapCaller.findFloaterById(searchedCityId);
+				if (floater == null)
+				{
+					return;
+				}
+				
+				// remove.
+				this.removeChild(floater.disObj);
+				// remove its attached.
+				if (floater.data != null)
+				{
+					var obj:Object = floater.data[HozomMapUtil.FLOATER_ONLINE_KEY];
+					if (obj != null)
+					{
+						this.removeChild(Floater(obj).disObj);
+					}
+					
+					obj = floater.data[HozomMapUtil.FLOATER_POP_KEY];
+					if (obj != null)
+					{
+						this.removeChild(Floater(obj).disObj);
+					}
+				}
+				
+				mapCaller.removeFloaterById(searchedCityId);
 			}
 			
 			public function showOnline(hozomUserId:int) : void
@@ -138,7 +209,7 @@
 				return new Floater(0, 0, 0, 0, xOffset, yOffset, disObj);
 			}
 			
-			private function showOrHideAttachedFloater(id:int, floaterType:String, key:String, visible:Boolean):void
+			private function showOrHideAttachedFloater(id:int, floaterType:String, key:String, visible:Boolean, isAnimation:Boolean=true):void
 			{
 				var floater:Floater = mapCaller.findFloaterById(id);
 				if (floater == null || floater.type != floaterType)
@@ -158,11 +229,24 @@
 						this.removeChild(of.disObj);
 					}
 					
+					// show animation
+					if (visible == true && isAnimation && of.ed != null)
+					{
+						ed.copyData(of.ed);
+						parExpand.target = of.disObj;
+						//parExpand.end();
+						parExpand.play();
+					}
 					of.disObj.visible = visible;
 				}
 			}
 			
 			// event handlers
+			private function initHozomMap():void
+			{
+
+			}
+			
 			private function searchedCityRollOver(event:MouseEvent):void
 			{
 				if (!event.currentTarget is Image)
@@ -184,9 +268,55 @@
 				var id:int = int(img.data);
 				hideSearchedCityInfo(id);
 			}
+			
+			private function searchedCityComlete(event:Event):void
+			{
+				glowImage.target = event.currentTarget;
+				glowImage.play();
+			}
+			
+			private function hozomUserRollOver(event:MouseEvent):void
+			{
+				if (!event.currentTarget is Image)
+				{
+					return;
+				}
+				var img:Image = Image(event.currentTarget);
+				var id:int = int(img.data);
+				showHozomUserInfo(id);
+			}
+			
+			private function hozomUserRollOut(event:MouseEvent):void
+			{
+				if (!event.currentTarget is Image)
+				{
+					return;
+				}
+				var img:Image = Image(event.currentTarget);
+				var id:int = int(img.data);
+				hideHozomUserInfo(id);
+			}
 		]]>
 	</mx:Script>
 	<mx:SWFLoader id="hozomAmmap" source="ammap.swf?flashId=hozomAmmap" creationComplete="initAmmap();" />
 	<hozom:SummaryInfo x="{this.width-102}" y="{this.height-70}" hozomUserNumber="{hozomUserNumber}" contactNumber="{contactNumber}"/>
-	<mx:Text x="19" y="253" text="Text" width="330" height="37" id="txtDebug"/>
+	<!--<mx:Text x="19" y="253" text="Text" width="330" height="37" id="txtDebug"/>-->
+	
+	<mx:Parallel id="parExpand" duration="300">
+        <mx:Move xFrom="{ed.fromX}" yFrom="{ed.fromY}" xTo="{ed.toX}" yTo="{ed.toY}"/>
+        <mx:Resize widthFrom="{ed.fromW}" heightFrom="{ed.fromH}" widthTo="{ed.toW}" heightTo="{ed.toH}"/>
+    </mx:Parallel>
+    
+    <mx:Glow id="glowImage" duration="2000" repeatCount="0"
+        alphaFrom="1.0" alphaTo="0.5" 
+        blurXFrom="0.0" blurXTo="100.0" 
+        blurYFrom="0.0" blurYTo="100.0" 
+        color="0xF85200"/>
+    <!--
+    <mx:Glow id="unglowImage" duration="1000" 
+        alphaFrom="0.3" alphaTo="1.0" 
+        blurXFrom="50.0" blurXTo="0.0" 
+        blurYFrom="50.0" blurYTo="0.0" 
+        color="0xF85200"/>
+    -->
 </mx:Canvas>
