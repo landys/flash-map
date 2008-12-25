@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map map_file="maps/china.swf" tl_long="73.620045" tl_lat="53.553745" br_long="134.768463" br_lat="18.168882" zoom="100%" zoom_x="0%" zoom_y="0%">
+  <areas>
+    <area mc_name="CN_34" title="安徽" value="abcdefg"></area>
+    <area mc_name="CN_11" title="北京"></area>
+    <area mc_name="CN_50" title="重庆"></area>
+    <area mc_name="CN_35" title="福建"></area>
+    <area mc_name="CN_62" title="甘肃"></area>
+    <area mc_name="CN_44" title="广州"></area>
+    <area mc_name="CN_45" title="广西"></area>
+    <area mc_name="CN_52" title="贵州"></area>
+    <area mc_name="CN_46" title="海南"></area>
+    <area mc_name="CN_13" title="河北"></area>
+    <area mc_name="CN_23" title="黑龙江"></area>
+    <area mc_name="CN_41" title="河南"></area>
+    <area mc_name="CN_91" title="香港"></area>
+    <area mc_name="CN_42" title="湖北"></area>
+    <area mc_name="CN_43" title="湖南"></area>
+    <area mc_name="CN_15" title="内蒙古"></area>
+    <area mc_name="CN_32" title="江苏"></area>
+    <area mc_name="CN_36" title="江西"></area>
+    <area mc_name="CN_22" title="吉林"></area>
+    <area mc_name="CN_21" title="辽宁"></area>
+    <area mc_name="CN_92" title="澳门"></area>
+    <area mc_name="CN_64" title="宁夏"></area>
+    <area mc_name="CN_63" title="青海"></area>
+    <area mc_name="CN_61" title="陕西"></area>
+    <area mc_name="CN_37" title="山东"></area>
+    <area mc_name="CN_31" title="上海"></area>
+    <area mc_name="CN_14" title="山西"></area>
+    <area mc_name="CN_51" title="四川"></area>
+    <area mc_name="CN_12" title="天津"></area>
+    <area mc_name="CN_54" title="西藏"></area>
+    <area mc_name="CN_65" title="新疆"></area>
+    <area mc_name="CN_53" title="云南"></area>
+    <area mc_name="CN_33" title="浙江"></area>
+    <area mc_name="TW" title="台湾"></area>
+    <area mc_name="borders" title="borders" color="#FFFFFF" balloon="false"></area>
+  </areas>
+  <!--
+  <movies>
+  	<movie title="Beijing" file="target" color="#CC0000" width="12" height="12" long="116.387909" lat="39.90601" fixed_size="true"></movie>
+  </movies>
+-->
+<!--
+  <movies>
+    <movie title="Beijing. Click to zoom" file="target" color="#CC0000" width="15" height="15" long="116.387909" lat="39.90601" zoom="397.619%" zoom_x="-232.52%" zoom_y="-120.98%" fixed_size="true"></movie>
+    <movie title="Hong Kong" file="circle" color="#000000" width="5" height="5" long="114.153542" lat="22.411249" fixed_size="true"></movie>
+    <movie title="Macau" file="circle" color="#000000" width="5" height="5" long="113.5502" lat="22.1636915147872" fixed_size="true"></movie>    
+    <movie title="Taipei" file="target" color="000000" width="10" height="10" long="121.564194" lat="25.080441" fixed_size="true"></movie>
+  </movies>
+
+  <labels>
+    <label x="38.3693%" y="26.6968%" text_size="18" color="#FFFFFF" remain="false">
+      <text>People's Republic of China</text>
+    </label>
+  </labels>
+-->
+</map>
