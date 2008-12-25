@@ -75,6 +75,11 @@
 				return id;
 			}
 			
+			public function removeHozomUserById(hozomUserId:int):void
+			{
+				removeFlaoterById(hozomUserId);
+			}
+			
 			public function addSearchedCity(long:Number, lat:Number, phoneNumber:String, city:String):int
 			{
 				var floater:Floater = createImageFloater(long, lat, -10, -10, HozomMapUtil.ICON_FLASHDOT);
@@ -112,6 +117,11 @@
 				return id;
 			}
 			
+			public function removeContactById(contactId:int):void
+			{
+				removeFlaoterById(contactId);
+			}
+			
 			public function removeSearchedCityById(searchedCityId:int) : void
 			{
 				if (glowImage.isPlaying)
@@ -119,31 +129,7 @@
 					glowImage.end();
 				}
 				
-				var floater:Floater = mapCaller.findFloaterById(searchedCityId);
-				if (floater == null)
-				{
-					return;
-				}
-				
-				// remove.
-				this.removeChild(floater.disObj);
-				// remove its attached.
-				if (floater.data != null)
-				{
-					var obj:Object = floater.data[HozomMapUtil.FLOATER_ONLINE_KEY];
-					if (obj != null)
-					{
-						this.removeChild(Floater(obj).disObj);
-					}
-					
-					obj = floater.data[HozomMapUtil.FLOATER_POP_KEY];
-					if (obj != null)
-					{
-						this.removeChild(Floater(obj).disObj);
-					}
-				}
-				
-				mapCaller.removeFloaterById(searchedCityId);
+				removeFlaoterById(searchedCityId);
 			}
 			
 			public function showOnline(hozomUserId:int) : void
@@ -212,7 +198,7 @@
 			private function showOrHideAttachedFloater(id:int, floaterType:String, key:String, visible:Boolean, isAnimation:Boolean=true):void
 			{
 				var floater:Floater = mapCaller.findFloaterById(id);
-				if (floater == null || floater.type != floaterType)
+				if (floater == null || floater.type != floaterType || floater.isDeleted)
 				{
 					return;
 				}
@@ -239,6 +225,44 @@
 					}
 					of.disObj.visible = visible;
 				}
+			}
+			
+						private function removeFlaoterById(id:int) : void
+			{
+				var floater:Floater = mapCaller.findFloaterById(id);
+				if (floater == null && floater.isDeleted)
+				{
+					return;
+				}
+				
+				// remove.
+				if (floater.disObj.parent == this)
+				{
+					this.removeChild(floater.disObj);
+				}
+				// remove its attached.
+				if (floater.data != null)
+				{
+					var obj:Object = floater.data[HozomMapUtil.FLOATER_ONLINE_KEY];
+					if (obj != null)
+					{
+						if (Floater(obj).disObj.parent == this)
+						{
+							this.removeChild(Floater(obj).disObj);
+						}
+					}
+					
+					obj = floater.data[HozomMapUtil.FLOATER_POP_KEY];
+					if (obj != null)
+					{
+						if (Floater(obj).disObj.parent == this)
+						{
+							this.removeChild(Floater(obj).disObj);
+						}
+					}
+				}
+				
+				mapCaller.removeFloaterById(id);
 			}
 			
 			// event handlers
@@ -302,6 +326,7 @@
 	<hozom:SummaryInfo x="{this.width-102}" y="{this.height-70}" hozomUserNumber="{hozomUserNumber}" contactNumber="{contactNumber}"/>
 	<!--<mx:Text x="19" y="253" text="Text" width="330" height="37" id="txtDebug"/>-->
 	
+	<!-- effect region -->
 	<mx:Parallel id="parExpand" duration="300">
         <mx:Move xFrom="{ed.fromX}" yFrom="{ed.fromY}" xTo="{ed.toX}" yTo="{ed.toY}"/>
         <mx:Resize widthFrom="{ed.fromW}" heightFrom="{ed.fromH}" widthTo="{ed.toW}" heightTo="{ed.toH}"/>
