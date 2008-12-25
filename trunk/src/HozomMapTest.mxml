@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:hozom="*"
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	xmlns:hozom="*" backgroundColor="white"
 	initialize="beforeApp()"
 	creationComplete="initApp()">
 	<mx:Script>
@@ -28,9 +29,9 @@
 			private function createDot_click(event:MouseEvent):void
 			{
 				cid = hozomMap.addContact(116.387909, 39.90601);
-				hid = hozomMap.addHozomUser(100.387909, 39.90601);
-				hid2 = hozomMap.addHozomUser(98.387909, 30.90601);
-				sid = hozomMap.addSearchedCity(112.387909, 28.90601);
+				hid = hozomMap.addHozomUser(100.387909, 39.90601, "王老吉");
+				hid2 = hozomMap.addHozomUser(98.387909, 30.90601, "叶小强");
+				sid = hozomMap.addSearchedCity(112.387909, 28.90601, "13777383838", "浙江省杭州市");
 				
 				added = true;
 			}
@@ -60,7 +61,8 @@
 			<mx:Button id="btnShowSearchedCityInfo" label="showSearchedCityInfo" enabled="{added}" click="hozomMap.showSearchedCityInfo(sid)"/>
 			<mx:Button id="btnHideSearchedCityInfo" label="hideSearchedCityInfo" enabled="{added}" click="hozomMap.hideSearchedCityInfo(sid)"/>
 		</mx:VBox>
-		<hozom:HozomMap id="hozomMap" width="600" height="480" borderStyle="solid"/>
+		<hozom:HozomMap id="hozomMap" width="600" height="480" borderStyle="solid"
+			 hozomUserNumber="33" contactNumber="155"/>
 	</mx:HBox>
 	
 </mx:Application>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-	verticalScrollPolicy="off" horizontalScrollPolicy="off">
+	verticalScrollPolicy="off" horizontalScrollPolicy="off"
+	xmlns:hozom="*">
 	<mx:Script>
 		<![CDATA[
 			import mx.core.Application;
@@ -10,54 +11,35 @@
 			import mx.controls.Image;
 			import com.hozom.map.HozomMapUtil;
 			
+			// interact with the ammap.swf
 			private var mapCaller:HozomMapCaller;
 			
-			[Embed(source="assets/add.png")]
-			private const ICON_ADD:Class;
+			[Bindable]
+			public var hozomUserNumber:int;
 			
-			[Embed(source="assets/dot.png")]
-			private const ICON_DOT:Class;
-			
-			[Embed(source="assets/flashdot.png")]
-			private const ICON_FLASHDOT:Class;
-			
-			[Embed(source="assets/head.png")]
-			private const ICON_HEAD:Class;
-			
-			[Embed(source="assets/headpop.png")]
-			private const ICON_HEADPOP:Class;
-			
-			[Embed(source="assets/people.png")]
-			private const ICON_PEOPLE:Class;
-			
-			[Embed(source="assets/popnew.png")]
-			private const ICON_POPNEW:Class;
-			
-			[Embed(source="assets/report.png")]
-			private const ICON_REPORT:Class;
-			
-			[Embed(source="assets/search.png")]
-			private const ICON_SEARCH:Class;
-			
-			[Embed(source="assets/searchpop.png")]
-			private const ICON_SEARCHPOP:Class;
+			[Bindable]
+			public var contactNumber:int;
 			
 			public function addContact(long:Number, lat:Number):int
 			{
-				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, ICON_DOT);
+				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, HozomMapUtil.ICON_DOT);
 				floater.type = HozomMapUtil.CONTACT_TYPE;
 				this.addChild(floater.disObj);
 				return mapCaller.addFloater(floater);
 			}
 			
-			public function addHozomUser(long:Number, lat:Number):int
+			public function addHozomUser(long:Number, lat:Number, name:String):int
 			{
-				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, ICON_HEAD);
+				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, HozomMapUtil.ICON_HEAD);
 				floater.type = HozomMapUtil.HOZOM_USER_TYPE;
 				
 				floater.data = new Object();
-				var of:Floater = createAttachedImageFloater(floater, -6, -29, ICON_POPNEW);
-				var pf:Floater = createAttachedImageFloater(floater, 4, -41, ICON_HEADPOP);
+				var of:Floater = createAttachedImageFloater(floater, -6, -29, HozomMapUtil.ICON_POPNEW);
+				
+				var huip:HozomUserInfoPopup = new HozomUserInfoPopup();
+				huip.hozomUserName = name;
+				var pf:Floater = createAttachedFloater(floater, 4, -41, huip);
+				
 				floater.data[HozomMapUtil.FLOATER_ONLINE_KEY] = of;
 				floater.data[HozomMapUtil.FLOATER_POP_KEY] = pf;
 				
@@ -66,18 +48,31 @@
 				return mapCaller.addFloater(floater);
 			}
 			
-			public function addSearchedCity(long:Number, lat:Number):int
+			public function addSearchedCity(long:Number, lat:Number, phoneNumber:String, city:String):int
 			{
-				var floater:Floater = createImageFloater(long, lat, -10, -10, ICON_FLASHDOT);
+				var floater:Floater = createImageFloater(long, lat, -10, -10, HozomMapUtil.ICON_FLASHDOT);
 				floater.type = HozomMapUtil.SEARCHED_CITY_TYPE;
 				
 				floater.data = new Object();
-				var pf:Floater = createAttachedImageFloater(floater, -51, -50, ICON_SEARCHPOP);
+				
+				var scp:SearchedCityPopup = new SearchedCityPopup();
+				scp.phoneNumber = phoneNumber;
+				scp.city = city;
+				var pf:Floater = createAttachedFloater(floater, -51, -50, scp);
 				floater.data[HozomMapUtil.FLOATER_POP_KEY] = pf;
 				
 				this.addChild(floater.disObj);
+				var id:int = mapCaller.addFloater(floater);
 				
-				return mapCaller.addFloater(floater);
+				// and mouse handlers
+				var img:Image = Image(floater.disObj);
+				img.data = id;
+				img.buttonMode = true;
+				img.useHandCursor = true;
+				img.addEventListener(MouseEvent.ROLL_OVER, searchedCityRollOver);
+				img.addEventListener(MouseEvent.ROLL_OUT, searchedCityRollOut);
+
+				return id;
 			}
 			
 			public function showOnline(hozomUserId:int) : void
@@ -110,8 +105,6 @@
 				showOrHideAttachedFloater(searchedCityId, HozomMapUtil.SEARCHED_CITY_TYPE, HozomMapUtil.FLOATER_POP_KEY, false);
 			}
 			
-			//public function add
-			
 			private function initAmmap():void
 			{
 				mapCaller = new HozomMapCaller();
@@ -126,7 +119,6 @@
 				img.x = mapCaller.getXByLong(long) + xOffset;
 				img.y = mapCaller.getYByLat(lat) + yOffset;
 				img.source = source;
-				
 				return new Floater(long, lat, mcX, mcY, xOffset, yOffset, img);
 			}
 			
@@ -134,10 +126,16 @@
 			{
 				var img:Image = new Image();
 				img.source = source;
-				img.visible = false;
-				img.x = host.disObj.x + xOffset;
-				img.y = host.disObj.y + yOffset;
-				return new Floater(0, 0, 0, 0, xOffset, yOffset, img);
+				
+				return createAttachedFloater(host, xOffset, yOffset, img);
+			}
+			
+			private function createAttachedFloater(host:Floater, xOffset:Number, yOffset:Number, disObj:DisplayObject):Floater
+			{
+				disObj.visible = false;
+				disObj.x = host.disObj.x + xOffset;
+				disObj.y = host.disObj.y + yOffset;
+				return new Floater(0, 0, 0, 0, xOffset, yOffset, disObj);
 			}
 			
 			private function showOrHideAttachedFloater(id:int, floaterType:String, key:String, visible:Boolean):void
@@ -163,7 +161,32 @@
 					of.disObj.visible = visible;
 				}
 			}
+			
+			// event handlers
+			private function searchedCityRollOver(event:MouseEvent):void
+			{
+				if (!event.currentTarget is Image)
+				{
+					return;
+				}
+				var img:Image = Image(event.currentTarget);
+				var id:int = int(img.data);
+				showSearchedCityInfo(id);
+			}
+			
+			private function searchedCityRollOut(event:MouseEvent):void
+			{
+				if (!event.currentTarget is Image)
+				{
+					return;
+				}
+				var img:Image = Image(event.currentTarget);
+				var id:int = int(img.data);
+				hideSearchedCityInfo(id);
+			}
 		]]>
 	</mx:Script>
 	<mx:SWFLoader id="hozomAmmap" source="ammap.swf?flashId=hozomAmmap" creationComplete="initAmmap();" />
+	<hozom:SummaryInfo x="{this.width-102}" y="{this.height-70}" hozomUserNumber="{hozomUserNumber}" contactNumber="{contactNumber}"/>
+	<mx:Text x="19" y="253" text="Text" width="330" height="37" id="txtDebug"/>
 </mx:Canvas>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="129" height="44"
+	backgroundImage="{HozomMapUtil.ICON_HEADPOP}">
+	<mx:Script>
+		<![CDATA[
+			import com.hozom.map.HozomMapUtil;
+		
+			[Bindable]
+			public var hozomUserName:String;
+		]]>
+	</mx:Script>
+	<mx:Style>
+		.lblName
+		{
+			fontSize:12;
+			color:#6372A0;
+		}
+	</mx:Style>
+	<mx:Label text="{hozomUserName}" x="33" y="7" width="86" styleName="lblName"/>
+</mx:Canvas>
