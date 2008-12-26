@@ -2,8 +2,8 @@
 <settings>
   <developer_mode></developer_mode>                           <!-- [false] (true / false) If set to true, developer information is displayed. You can also copy developer information to clipboard through right click menu -->
   <projection>mercator</projection>                           <!-- [xy] (mercator, xy) Projection of your map. If you do not care about actual longitudes and latitudes I recommend to use xy projection. The default world map uses Mercator projection. -->
-  <width>600</width>                                             <!-- [] (Number) if empty, will be equal to width of your flash movie -->
-  <height>600</height>                                           <!-- [] (Number) if empty, will be equal to height of your flash movie -->
+  <width>410</width>                                             <!-- [] (Number) if empty, will be equal to width of your flash movie -->
+  <height>240</height>                                           <!-- [] (Number) if empty, will be equal to height of your flash movie -->
   <font>Tahoma</font>                                         <!-- [Tahoma] (font name) use device fonts, such as Tahoma, Times New Roman, Tahoma, Verdana... -->
   <text_size>11</text_size>                                   <!-- [11] (Number) text size of all texts. Every text size can be set individually in the settings below -->
   <text_color></text_color>                                   <!-- [#000000] (hex color code) main text color. Every text color can be set individually in the settings below-->
@@ -27,7 +27,7 @@
   </background>
 
   <zoom>                                                      <!-- zoom control -->
-    <enabled></enabled>                                       <!-- [true] (true / false) whether to display zoom control or not -->
+    <enabled>false</enabled>                                       <!-- [true] (true / false) whether to display zoom control or not -->
     <locked></locked>                                         <!-- [false] (true / false) whether it would be possible to drag zoom bar when dragging "home" icon -->
     <mouse_wheel_enabled></mouse_wheel_enabled>               <!-- [true] (true / false) whether to enable zooming with mouse wheel. Mouse wheel work only after user clicks somewhere on a flash. To workaround this issue, you have to add: onLoad="ammap.focus()" to your html <body> -->
     <arrows_enabled></arrows_enabled>                         <!-- [true] (true / false) whether to display navigation arrows or not -->
@@ -40,9 +40,9 @@
     <outline_alpha></outline_alpha>                           <!-- [100] (0 - 100) -->
     <x></x>                                                   <!-- [15] (Number or Number%) x position of zoom control -->
     <y></y>                                                   <!-- [15] (Number or Number%) y position of zoom control -->
-    <height></height>                                         <!-- [200] (Number or Number%) zoom control height -->
+    <height>50</height>                                         <!-- [200] (Number or Number%) zoom control height -->
     <min></min>                                               <!-- [] (Number%) minimum zoom. if left empty, the minimum value will be calculated automaticaly (to fit all the map to the stage) -->
-    <max></max>                                               <!-- [2000%] (Number%) maximum zoom -->
+    <max>1000%</max>                                               <!-- [2000%] (Number%) maximum zoom -->
     <grid_every></grid_every>                                 <!-- [100%] (Number%) zoom tool grid will will be displayed every "grid_every" value and the dragger height will be equal to the distance between two grids -->
     <time></time>                                             <!-- [1] time of zoom in seconds -->
     <effect></effect>                                         <!-- [easeout] (easeout / easein) zoom motion effect -->
