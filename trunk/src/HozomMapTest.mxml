@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
 	xmlns:hozom="*" backgroundColor="white"
-	initialize="beforeApp()"
-	creationComplete="initApp()">
+	initialize="beforeApp()">
 	<mx:Script>
 		<![CDATA[
 			import mx.controls.Alert;
@@ -19,11 +18,6 @@
 			private function beforeApp():void
 			{
 				FlashInterface.publish(this, true);
-			}
-			
-			private function initApp():void
-			{
-
 			}
 			
 			private function createDot_click(event:MouseEvent):void
@@ -65,7 +59,7 @@
 			<mx:Button label="RemoveHozomUser" enabled="{added}" click="hozomMap.removeHozomUserById(hid)"/>
 			<mx:Button label="RemoveSearchedCity" enabled="{added}" click="hozomMap.removeSearchedCityById(sid)"/>
 		</mx:VBox>
-		<hozom:HozomMap id="hozomMap" width="600" height="480" borderStyle="solid"
+		<hozom:HozomMap id="hozomMap" width="810" height="410" borderStyle="solid"
 			 hozomUserNumber="33" contactNumber="155"/>
 	</mx:HBox>
 	

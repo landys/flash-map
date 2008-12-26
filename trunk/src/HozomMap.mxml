@@ -322,7 +322,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:SWFLoader id="hozomAmmap" source="ammap.swf?flashId=hozomAmmap" creationComplete="initAmmap();" />
+	<mx:SWFLoader id="hozomAmmap" source="assets/flash/map.swf?flashId=hozomAmmap" creationComplete="initAmmap();" />
 	<hozom:SummaryInfo x="{this.width-102}" y="{this.height-70}" hozomUserNumber="{hozomUserNumber}" contactNumber="{contactNumber}"/>
 	<!--<mx:Text x="19" y="253" text="Text" width="330" height="37" id="txtDebug"/>-->
 	

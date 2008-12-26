@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map map_file="maps/china.swf" tl_long="73.620045" tl_lat="53.553745" br_long="134.768463" br_lat="18.168882" zoom="100%" zoom_x="0%" zoom_y="0%">
+<map map_file="assets/flash/china.swf" tl_long="73.620045" tl_lat="53.553745" br_long="134.768463" br_lat="18.168882" zoom="100%" zoom_x="0%" zoom_y="0%">
   <areas>
-    <area mc_name="CN_34" title="安徽" value="abcdefg"></area>
+    <area mc_name="CN_34" title="安徽"></area>
     <area mc_name="CN_11" title="北京"></area>
     <area mc_name="CN_50" title="重庆"></area>
     <area mc_name="CN_35" title="福建"></area>
