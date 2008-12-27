@@ -1121,18 +1121,6 @@ class com.ammap.Ammap
 		var _long_lat_test = "calc_long=" + findXByLong(__long) + ", calc_lat=" + findYByLat(__lat);
 		
         __developer_tf.__set__htmlTxt(_cons_test + "<br>" + _long_lat_test + "<br>" + __long_lat + "<br>" + __xy + "<br>" + __xyp + "<br>" + __zoom_info + "<br><b>Right click to copy this info to clipboard</b>");
-    
-		
-        /*FlashInterface.dispatchEvent({type:'mouseMove', 
-									 data:{x:__mc._xmouse, 
-									 y:__mc._ymouse,
-									 long:__long,
-									 lat:__lat,
-									 xp:__mc._xmouse / __config.width,
-									 yp:__mc._ymouse / __config.height,
-									 zoom:__zoom_level,
-									 zoomx:__map_mc._x / __config.map_width,
-									 zoomy:__map_mc._y / __config.map_height}});*/
     } // End of the function
 	// end of tony
 	
@@ -1167,6 +1155,9 @@ class com.ammap.Ammap
     {
         clearInterval(__inited_interval);
         __map_inited = true;
+		// tony
+		FlashInterface.dispatchEvent({type:'mapReady', data:''});
+		// end of tony
         flash.external.ExternalInterface.call("amMapCompleted", __config.map_id);
     } // End of the function
     function die()
