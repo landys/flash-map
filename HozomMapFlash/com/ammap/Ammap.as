@@ -702,66 +702,88 @@ class com.ammap.Ammap
         movie_mc._width = params[0];
         movie_mc._height = params[1];
     } // End of the function
+	// modify by tony
     function __initMouseListener()
     {
         var main_obj = this;
         __mouse_listener = new Object();
         __mouse_listener.onMouseMove = function ()
         {
-            if (main_obj.__balloon_mc._visible == true)
+			/*if (!main_obj.__checkMouseAvailable())
+			{
+				return;
+			}  // end if 
+			*/
+			if (main_obj.__balloon_mc._visible == true)
             {
-                main_obj.__balloon.pointTo(main_obj.__target_mc._xmouse, main_obj.__target_mc._ymouse);
+               	main_obj.__balloon.pointTo(main_obj.__target_mc._xmouse, main_obj.__target_mc._ymouse);
             } // end if
             if (main_obj.__zooming == true)
             {
-                main_obj.__makeZoom();
-            } // end if
+               	main_obj.__makeZoom();
+           	} // end if
             if (_global.drag_busy == this)
             {
-                main_obj.__makeMove();
+               	main_obj.__makeMove();
             } // end if
             main_obj.__setDeveloperText();
         };
         __mouse_listener.onMouseDown = function ()
         {
-            _global.drag_busy = this;
+			if (!main_obj.__checkMouseAvailable())
+			{
+				return;
+			}  // end if 
+			
+			_global.drag_busy = this;
             main_obj.__moved = false;
             clearInterval(main_obj.__interval);
             main_obj.__balloon_mc._visible = false;
             if (main_obj.__config.drag_map == true)
             {
-                _global.drag_busy = this;
-                main_obj.__stopTween();
-                main_obj.__move_start_x = _root._xmouse;
-                main_obj.__move_start_y = _root._ymouse;
-                main_obj.__map_move_start_x = main_obj.__map_mc._x;
-                main_obj.__map_move_start_y = main_obj.__map_mc._y;
+               	_global.drag_busy = this;
+               	main_obj.__stopTween();
+               	main_obj.__move_start_x = _root._xmouse;
+               	main_obj.__move_start_y = _root._ymouse;
+               	main_obj.__map_move_start_x = main_obj.__map_mc._x;
+               	main_obj.__map_move_start_y = main_obj.__map_mc._y;
             } // end if
         };
         __mouse_listener.onMouseUp = function ()
         {
-            _global.drag_busy = false;
+			/*
+			if (!main_obj.__checkMouseAvailable())
+			{
+				return;
+			}  // end if 
+			*/
+			_global.drag_busy = false;            
         };
         if (__config.zoom.mouse_wheel_enabled == true)
         {
             __mouse_listener.onMouseWheel = function (delta)
             {
-                if (_global.wheel_busy == false)
+				if (!main_obj.__checkMouseAvailable())
+				{
+					return;
+				} // end if
+				if (_global.wheel_busy == false)
                 {
-                    if (delta > 0)
-                    {
-                        main_obj.__zoomIn();
-                    }
-                    else
-                    {
-                        main_obj.__zoomOut();
-                    } // end if
+                   	if (delta > 0)
+                   	{
+                       	main_obj.__zoomIn();
+                   	}
+                   	else
+                   	{
+                       	main_obj.__zoomOut();
+                   	} // end if
                 } // end else if
             };
         } // end if
         Mouse.removeListener(__mouse_listener);
         Mouse.addListener(__mouse_listener);
     } // End of the function
+	// end of modify by tony
     function __initAreas()
     {
         var main_obj = this;
@@ -1083,7 +1105,8 @@ class com.ammap.Ammap
 		var _cons_test = "__mc._xmouse=" + __mc._xmouse + ", __mc._ymouse=" + __mc._ymouse + "<br>"
 			+ "__map_mc._x=" + __map_mc._x + ", __map_mc._y=" + __map_mc._y + "<br>"
 			+ "__config.map_width=" + __config.map_width + ", __config.map_height=" + __config.map_height + "<br>"
-			+ "__map_mc._xmouse=" + __map_mc._xmouse + ", __map_mc._ymouse=" + __map_mc._ymouse;
+			+ "__map_mc._xmouse=" + __map_mc._xmouse + ", __map_mc._ymouse=" + __map_mc._ymouse + "<br>"
+			+ "__target_mc._interact_width=" + __target_mc._interact_width + ", __target_mc._interact_height=" + __target_mc._interact_height;
         __xy = "x=\"" + Math.round(__mc._xmouse) + "\" y=\"" + Math.round(__mc._ymouse) + "\"";
         __xyp = "x=\"" + com.ammap.Utils.roundTo(__mc._xmouse / __config.width * 100, 4) + "%\" y=\"" + com.ammap.Utils.roundTo(__mc._ymouse / __config.height * 100, 4) + "%\"";
         __zoom_info = "zoom=\"" + __zoom_level + "%\" zoom_x=\"" + com.ammap.Utils.roundTo(__map_mc._x / __config.map_width * 100, 2) + "%\" zoom_y=\"" + com.ammap.Utils.roundTo(__map_mc._y / __config.map_height * 100, 2) + "%\"";
@@ -1296,5 +1319,10 @@ class com.ammap.Ammap
     {
         return __map_mc._y;
     } // End of the function
+	function __checkMouseAvailable()
+	{
+		return (__mc._xmouse >= 0 && __mc._xmouse < __target_mc._interact_width
+			&& __mc._ymouse >= 0 && __mc._ymouse < __target_mc._interact_height);
+	} // End of the function
 	// End of tony
 } // End of Class
