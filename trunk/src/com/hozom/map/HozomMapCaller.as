@@ -22,13 +22,17 @@ package com.hozom.map
 		
 		private var floaterMap : Object = new Object();
 		
+		private var mapReadyCallback:Function;
+		
 		public function HozomMapCaller()
 		{
 		}
 		
-		public function initListener():void
+		public function initMap(mapReadyCallback:Function):void
 		{
+			this.mapReadyCallback = mapReadyCallback;
 			FlashInterface.addEventListener("ammapMouseMove", ammpMouseMove);
+			FlashInterface.addEventListener("mapReady", mapReadyHandler);
 		}
 		
 		public function ammpMouseMove(event:FlashInterfaceEvent):void
@@ -46,6 +50,19 @@ package com.hozom.map
 				
 				adjustFloaters();
 			}
+		}
+		
+		public function mapReadyHandler(event:FlashInterfaceEvent):void
+		{
+			if (mapReadyCallback != null)
+			{
+				mapReadyCallback();
+			}
+		}
+		
+		public function setInteractSize(interactWidth:int, interactHeight:int):void
+		{
+			FlashInterface.call(AMMAP_ID + ".setInteractSize", interactWidth, interactHeight);
 		}
 		
 		public function addFloater(floater:Floater):int
