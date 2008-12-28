@@ -179,7 +179,8 @@ class com.ammap.Ammap
         this.__resizeObjects();
         if (__map_inited != true && __inited_interval == undefined)
         {
-            __inited_interval = setInterval(this, "__initMap", 5000);
+			// modify by tony, make 5000 to 1000ms
+            __inited_interval = setInterval(this, "__initMap", 1000);
         } // end if
     } // End of the function
     function __click_home()
