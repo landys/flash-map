@@ -50,7 +50,7 @@
 			
 			private function mapReady():void
 			{
-				sid = hozomMap.addSearchedCity(112.387909, 28.90601, "13777383838", "浙江省杭州市");
+				sid = hozomMap.addSearchedCity(120.1, 30.16, "13777383838", "浙江省杭州市");
 				
 			}
 			
@@ -69,8 +69,9 @@
 			<mx:Button label="RemoveHozomUser" enabled="{added}" click="hozomMap.removeHozomUserById(hid)"/>
 			<mx:Button label="RemoveSearchedCity" enabled="{added}" click="hozomMap.removeSearchedCityById(sid)"/>
 		</mx:VBox>
-		<hozom:HozomMap id="hozomMap" width="810" height="410" borderStyle="solid"
-			 hozomUserNumber="33" contactNumber="155" mapReady="mapReady"/>
+		<hozom:HozomMap id="hozomMap" width="403" height="240" borderStyle="solid"
+			mapX="20" hozomUserNumber="33" contactNumber="155" mapReady="mapReady"/>
+		
 	</mx:HBox>
 	
 </mx:Application>

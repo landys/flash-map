@@ -29,6 +29,12 @@
 			[Bindable]
 			private var ed:ExpandData = new ExpandData();;
 			
+			[Bindable]
+			public var mapX:int = 0;
+			
+			[Bindable]
+			public var mapY:int = 0;
+			
 			public function addContact(long:Number, lat:Number):int
 			{
 				var floater:Floater = createImageFloater(long, lat, -3.5, -3.5, HozomMapUtil.ICON_DOT);
@@ -182,13 +188,15 @@
 			
 			private function createImageFloater(long:Number, lat:Number, xOffset:Number, yOffset:Number, source:Class):Floater
 			{
+				var newXOffset:int = xOffset + mapX;
+				var newYOffset:int = yOffset + mapY;
 				var img:Image = new Image();
 				var mcX:Number = mapCaller.getMcXByLong(long);
 				var mcY:Number = mapCaller.getMcYByLat(lat);
-				img.x = mapCaller.getXByLong(long) + xOffset;
-				img.y = mapCaller.getYByLat(lat) + yOffset;
+				img.x = mapCaller.getXByLong(long) + newXOffset;
+				img.y = mapCaller.getYByLat(lat) + newYOffset;
 				img.source = source;
-				return new Floater(long, lat, mcX, mcY, xOffset, yOffset, img);
+				return new Floater(long, lat, mcX, mcY, newXOffset, newYOffset, img);
 			}
 			
 			private function createAttachedImageFloater(host:Floater, xOffset:Number, yOffset:Number, source:Class) : Floater
@@ -201,10 +209,12 @@
 			
 			private function createAttachedFloater(host:Floater, xOffset:Number, yOffset:Number, disObj:DisplayObject):Floater
 			{
+				var newXOffset:int = xOffset + mapX;
+				var newYOffset:int = yOffset + mapY;
 				disObj.visible = false;
-				disObj.x = host.disObj.x + xOffset;
-				disObj.y = host.disObj.y + yOffset;
-				return new Floater(0, 0, 0, 0, xOffset, yOffset, disObj);
+				disObj.x = host.disObj.x + newXOffset;
+				disObj.y = host.disObj.y + newYOffset;
+				return new Floater(0, 0, 0, 0, newXOffset, newYOffset, disObj);
 			}
 			
 			private function showOrHideAttachedFloater(id:int, floaterType:String, key:String, visible:Boolean, isAnimation:Boolean=true):void
@@ -334,7 +344,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:SWFLoader id="hozomAmmap" source="assets/flash/map.swf?flashId=hozomAmmap" creationComplete="initAmmap();" />
+	<mx:SWFLoader id="hozomAmmap" source="assets/flash/map.swf?flashId=hozomAmmap" creationComplete="initAmmap();" x="{mapX}" y="{mapY}"/>
 	<hozom:SummaryInfo x="{this.width-102}" y="{this.height-70}" hozomUserNumber="{hozomUserNumber}" contactNumber="{contactNumber}"/>
 	<!--<mx:Text x="19" y="253" text="Text" width="330" height="37" id="txtDebug"/>-->
 	
