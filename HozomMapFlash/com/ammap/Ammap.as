@@ -287,6 +287,9 @@ class com.ammap.Ammap
         this.__resizeObjects();
         __zoom_mc.dragger_mc._y = -((__zoom_level - __config.zoom.min) * __grid_step - __zoom_mc.minus_mc._y + __zoom_mc.dragger_mc._height);
         this.__updateRectangle();
+		
+		// add by tony
+		FlashInterface.dispatchEvent({type:'ammapMouseMove', data:{coordx:__map_mc._x, coordy:__map_mc._y, zoom:__zoom_level}});
     } // End of the function
     function __initZoom()
     {
@@ -450,6 +453,7 @@ class com.ammap.Ammap
         {
             var _loc2 = Math.ceil(__zoom_level + __config.zoom.grid_every);
             this.__zoomTo(com.ammap.Utils.fitToBounds(_loc2, __config.zoom.min, __config.zoom.max));
+			//FlashInterface.dispatchEvent({type:'ammapMouseMove', data:{coordx:__map_mc._x, coordy:__map_mc._y, zoom:__zoom_level}});
         } // end if
     } // End of the function
     function __zoomOut()
@@ -458,6 +462,7 @@ class com.ammap.Ammap
         {
             var _loc2 = Math.floor(__zoom_level - __config.zoom.grid_every);
             this.__zoomTo(com.ammap.Utils.fitToBounds(_loc2, __config.zoom.min, __config.zoom.max));
+			//FlashInterface.dispatchEvent({type:'ammapMouseMove', data:{coordx:__map_mc._x, coordy:__map_mc._y, zoom:__zoom_level}});
         } // end if
     } // End of the function
     function __initLegend()
@@ -768,6 +773,7 @@ class com.ammap.Ammap
 				{
 					return;
 				} // end if
+				
 				if (_global.wheel_busy == false)
                 {
                    	if (delta > 0)
