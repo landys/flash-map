@@ -209,12 +209,10 @@
 			
 			private function createAttachedFloater(host:Floater, xOffset:Number, yOffset:Number, disObj:DisplayObject):Floater
 			{
-				var newXOffset:int = xOffset + mapX;
-				var newYOffset:int = yOffset + mapY;
 				disObj.visible = false;
-				disObj.x = host.disObj.x + newXOffset;
-				disObj.y = host.disObj.y + newYOffset;
-				return new Floater(0, 0, 0, 0, newXOffset, newYOffset, disObj);
+				disObj.x = host.disObj.x + xOffset;
+				disObj.y = host.disObj.y + yOffset;
+				return new Floater(0, 0, 0, 0, xOffset, yOffset, disObj);
 			}
 			
 			private function showOrHideAttachedFloater(id:int, floaterType:String, key:String, visible:Boolean, isAnimation:Boolean=true):void
